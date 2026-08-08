@@ -9,7 +9,7 @@ import java.util.List;
 
 public class StudentService {
 
-    private List<Student> students = new ArrayList<>();
+    private final List<Student> students = new ArrayList<>();
 
     public Student addStudent(String firstName, String lastName, String email, String batch, boolean status) {
         Student student = new Student();

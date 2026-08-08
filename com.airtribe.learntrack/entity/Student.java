@@ -5,11 +5,6 @@ public class Student extends Person {
     private String batch;
     private boolean active;
 
-    public Student(int id, String batch, boolean active) {
-        this.id = id;
-        this.batch = batch;
-        this.active = active;
-    }
 
     @Override
     public String toString() {

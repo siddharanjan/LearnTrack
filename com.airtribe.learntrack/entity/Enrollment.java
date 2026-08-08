@@ -1,17 +1,40 @@
 package entity;
 
 public class Enrollment {
-    private String id;
-    private String studentId;
-    private String courseId;
+    private int id;
+    private int studentId;
+    private int courseId;
     private String enrollmentDate;
+    private Status status;
+
+    @Override
+    public String toString() {
+        return "Enrollment{" +
+                "Enrollment Id =" + id +
+                ", Student Id =" + studentId +
+                ", Course Id =" + courseId +
+                ", Enrollment Date ='" + enrollmentDate + '\'' +
+                ", Enrollment Status =" + status +
+                '}';
+    }
+
+    public Enrollment(int id, int studentId, int courseId, String enrollmentDate, Status status) {
+        this.id = id;
+        this.studentId = studentId;
+        this.courseId = courseId;
+        this.enrollmentDate = enrollmentDate;
+        this.status = status;
+    }
+
+
+
     public enum Status {
         ACTIVE,
         COMPLETED,
         CANCELLED
     }
 
-    public Enrollment(String id, String studentId, String courseId, String enrollmentDate) {
+    public Enrollment(int id, int studentId, int courseId, String enrollmentDate) {
         this.id = id;
         this.studentId = studentId;
         this.courseId = courseId;
@@ -21,27 +44,27 @@ public class Enrollment {
     public Enrollment() {
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public String getStudentId() {
+    public int getStudentId() {
         return studentId;
     }
 
-    public void setStudentId(String studentId) {
+    public void setStudentId(int studentId) {
         this.studentId = studentId;
     }
 
-    public String getCourseId() {
+    public int getCourseId() {
         return courseId;
     }
 
-    public void setCourseId(String courseId) {
+    public void setCourseId(int courseId) {
         this.courseId = courseId;
     }
 
@@ -51,5 +74,13 @@ public class Enrollment {
 
     public void setEnrollmentDate(String enrollmentDate) {
         this.enrollmentDate = enrollmentDate;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }

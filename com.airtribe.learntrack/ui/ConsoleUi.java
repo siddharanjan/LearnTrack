@@ -1,17 +1,22 @@
 package ui;
 
 import entity.Course;
+import entity.Enrollment;
 import entity.Student;
+import exception.EntityNotActiveException;
+import exception.EntityNotFoundException;
 import service.CourseService;
+import service.EnrollmentService;
 import service.StudentService;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class ConsoleUi {
-    static StudentService studentService =  new StudentService();
-    static CourseService courseService =  new CourseService();
+    private static final StudentService studentService =  new StudentService();
+    private static final CourseService courseService =  new CourseService();
+    private static final EnrollmentService enrollmentService =
+            new EnrollmentService(studentService, courseService);
 
     static Scanner sc = new Scanner(System.in);
 
@@ -171,6 +176,59 @@ public class ConsoleUi {
         } else {
             System.out.println("Deactivated course details: " +courseActivation);
         }
+        System.out.println("Return to previous menu press enter");
+        sc.nextLine();
+    }
+
+    public static void enrollAStudent() throws EntityNotFoundException {
+        System.out.println("============================");
+        System.out.println("=======Enrollment=======");
+        System.out.println("Enter student Id: ");
+        int studentId = sc.nextInt();
+        System.out.println("Enter Course Id: ");
+        int courseId = sc.nextInt();
+        sc.nextLine();
+        System.out.println("Enter Enrollment Date: ");
+        String enrollmentDate = sc.nextLine().trim();
+        try {
+            Enrollment enrollment = enrollmentService.enrollStudentInCourse(studentId, courseId, enrollmentDate);
+            System.out.println("Enrollment added sucessfully: " + enrollment);
+        } catch (EntityNotFoundException | EntityNotActiveException e) {
+            System.out.println("Error: "  + e.getMessage());
+            System.out.println("Return to previous menu press enter");
+            sc.nextLine();
+            return;
+        }
+        System.out.println("Return to previous menu press enter");
+        sc.nextLine();
+    }
+
+    public static void viewEnrollmentForStudent() throws EntityNotFoundException {
+        System.out.println("============================");
+        System.out.println("=======Enrollment Details=======");
+        System.out.println("Student Id: ");
+        int studentId = sc.nextInt();
+        sc.nextLine();
+        Enrollment enrollment = enrollmentService.getEnrollment(studentId);
+        System.out.println(enrollment);
+        Student student = studentService.getStudentById(studentId);
+        System.out.println(student);
+        Course course = courseService.getCourseById(enrollment.getCourseId());
+        System.out.println(course);
+        System.out.println("Return to previous menu press enter");
+        sc.nextLine();
+    }
+
+    public static void markEnrollment() throws EntityNotFoundException {
+        System.out.println("============================");
+        System.out.println("=======Enrollment Status change=======");
+        System.out.println("Enter Enrollment Id: ");
+        int enrollmentId = Integer.parseInt(sc.nextLine().trim());
+        System.out.println("Enter status (COMPLETED, CANCELLED):");
+        String statusInput = sc.nextLine().trim().toUpperCase();
+        Enrollment.Status status = Enrollment.Status.valueOf(statusInput);
+        Enrollment enrollment = enrollmentService.markEnrollment(enrollmentId, status);
+        System.out.println("Enrollment Updated successfully: " + enrollment);
         System.out.println("Return to previous menu press enter");
         sc.nextLine();
     }

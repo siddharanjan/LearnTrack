@@ -8,7 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class CourseService {
-    List<Course> courses = new ArrayList<>();
+    private final List<Course> courses = new ArrayList<>();
 
     public Course addCourse(Course course) {
         course.setId(IdGenerator.courseIdGenerator());
@@ -41,6 +41,15 @@ public class CourseService {
         for(Course course : courses) {
             if(course.getId() == courseIdDeActivation) {
                 course.setActive(false);
+                return course;
+            }
+        }
+        return null;
+    }
+
+    public Course getCourseById(int courseId) {
+        for(Course course : courses) {
+            if(course.getId() == courseId) {
                 return course;
             }
         }
