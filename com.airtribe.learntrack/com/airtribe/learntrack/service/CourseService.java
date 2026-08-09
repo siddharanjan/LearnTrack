@@ -1,10 +1,9 @@
-package service;
+package com.airtribe.learntrack.service;
 
-import entity.Course;
-import util.IdGenerator;
+import com.airtribe.learntrack.entity.Course;
+import com.airtribe.learntrack.util.IdGenerator;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class CourseService {
@@ -17,14 +16,7 @@ public class CourseService {
     }
 
     public List<Course> getCourses() {
-        Iterator<Course> iterator = courses.iterator();
-        while (iterator.hasNext()) {
-            Course course = iterator.next();
-            if(!course.isActive()) {
-                iterator.remove();
-            }
-        }
-        return courses;
+        return new ArrayList<>(courses);
     }
 
     public Course courseActivation(int courseIdActivation) {

@@ -1,13 +1,13 @@
-package ui;
+package com.airtribe.learntrack.ui;
 
-import entity.Course;
-import entity.Enrollment;
-import entity.Student;
-import exception.EntityNotActiveException;
-import exception.EntityNotFoundException;
-import service.CourseService;
-import service.EnrollmentService;
-import service.StudentService;
+import com.airtribe.learntrack.entity.Course;
+import com.airtribe.learntrack.entity.Enrollment;
+import com.airtribe.learntrack.entity.Student;
+import com.airtribe.learntrack.exception.EntityNotActiveException;
+import com.airtribe.learntrack.exception.EntityNotFoundException;
+import com.airtribe.learntrack.service.CourseService;
+import com.airtribe.learntrack.service.EnrollmentService;
+import com.airtribe.learntrack.service.StudentService;
 
 import java.util.List;
 import java.util.Scanner;
@@ -53,8 +53,9 @@ public class ConsoleUi {
         String batch = sc.nextLine().trim();
         System.out.println("Student status:");
         boolean status = Boolean.parseBoolean(sc.nextLine().trim());
-        Student student = studentService.addStudent(firstName, lastName, email, batch, status);
-        System.out.println("Student added successfully: " +student);
+        Student student = new Student(firstName, lastName, email, batch, status);
+        Student addedStudent = studentService.addStudent(student);
+        System.out.println("Student added successfully: " +addedStudent);
         System.out.println("Return to previous menu press enter");
         sc.nextLine();
     }

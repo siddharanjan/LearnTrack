@@ -1,5 +1,5 @@
-import exception.EntityNotFoundException;
-import ui.ConsoleUi;
+import com.airtribe.learntrack.exception.EntityNotFoundException;
+import com.airtribe.learntrack.ui.ConsoleUi;
 
 import java.util.Scanner;
 

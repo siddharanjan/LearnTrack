@@ -1,12 +1,12 @@
-package service;
+package com.airtribe.learntrack.service;
 
-import entity.Course;
-import entity.Enrollment;
-import entity.Student;
+import com.airtribe.learntrack.entity.Course;
+import com.airtribe.learntrack.entity.Enrollment;
+import com.airtribe.learntrack.entity.Student;
 
-import exception.EntityNotActiveException;
-import exception.EntityNotFoundException;
-import util.IdGenerator;
+import com.airtribe.learntrack.exception.EntityNotActiveException;
+import com.airtribe.learntrack.exception.EntityNotFoundException;
+import com.airtribe.learntrack.util.IdGenerator;
 
 import java.util.ArrayList;
 import java.util.List;

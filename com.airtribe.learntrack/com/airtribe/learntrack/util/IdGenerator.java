@@ -1,9 +1,9 @@
-package util;
+package com.airtribe.learntrack.util;
 
 public class IdGenerator {
-    public static int studentId = 1;
-    public static int courseId = 1;
-    public static int enrollmentId = 1;
+    private static int studentId = 1;
+    private static int courseId = 1;
+    private static int enrollmentId = 1;
 
     public static int studentIdGenerator(){
         return studentId++;

@@ -1,25 +1,9 @@
-package entity;
+package com.airtribe.learntrack.entity;
 
-public class Student extends Person {
+public class Trainer extends Person {
     private int id;
     private String batch;
     private boolean active;
-
-
-    @Override
-    public String toString() {
-        return "Student{" +
-                "Student Id: " + id +
-                ", First Name: "+ getFirstName() +
-                ", Last Name: "+ getLastName() +
-                ", Email: "+ getEmail() +
-                ", Batch: " + batch  +
-                ", Active: " + active +
-                '}';
-    }
-
-    public Student() {
-    }
 
     public int getId() {
         return id;
@@ -33,6 +17,7 @@ public class Student extends Person {
         return batch;
     }
 
+
     public void setBatch(String batch) {
         this.batch = batch;
     }
@@ -42,6 +27,15 @@ public class Student extends Person {
     }
 
     public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public Trainer() {
+    }
+
+    public Trainer(int id, String batch, boolean active) {
+        this.id = id;
+        this.batch = batch;
         this.active = active;
     }
 }

@@ -1,37 +1,23 @@
-package service;
+package com.airtribe.learntrack.service;
 
-import entity.Student;
-import util.IdGenerator;
+import com.airtribe.learntrack.entity.Student;
+import com.airtribe.learntrack.util.IdGenerator;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class StudentService {
 
     private final List<Student> students = new ArrayList<>();
 
-    public Student addStudent(String firstName, String lastName, String email, String batch, boolean status) {
-        Student student = new Student();
+    public Student addStudent(Student student) {
         student.setId(IdGenerator.studentIdGenerator());
-        student.setFirstName(firstName);
-        student.setLastName(lastName);
-        student.setEmail(email);
-        student.setBatch(batch);
-        student.setActive(status);
         students.add(student);
         return student;
     }
 
     public List<Student> getStudents() {
-        Iterator<Student> iterator = students.iterator();
-        while(iterator.hasNext()) {
-            Student student = iterator.next();
-            if(!student.isActive()) {
-                iterator.remove();
-            }
-        }
-        return students;
+        return new ArrayList<>(students);
     }
 
     public Student getStudentById(int id) {
