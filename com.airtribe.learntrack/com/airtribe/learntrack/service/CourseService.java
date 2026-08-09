@@ -22,7 +22,7 @@ public class CourseService {
     public Course courseActivation(int courseIdActivation) {
         for(Course course : courses) {
             if(course.getId() == courseIdActivation) {
-                course.setActive(true);
+                course.activate();
                 return course;
             }
         }
@@ -32,7 +32,7 @@ public class CourseService {
     public Course courseDeActivation(int courseIdDeActivation) {
         for(Course course : courses) {
             if(course.getId() == courseIdDeActivation) {
-                course.setActive(false);
+                course.deactivate();
                 return course;
             }
         }

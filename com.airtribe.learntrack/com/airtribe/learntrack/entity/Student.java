@@ -49,7 +49,15 @@ public class Student extends Person {
         return active;
     }
 
-    public void setActive(boolean active) {
+    public void activate() {
+        this.active = true;
+    }
+
+    public void deactivate() {
+        this.active = false;
+    }
+
+    private void setActive(boolean active) {
         this.active = active;
     }
 }

@@ -21,6 +21,14 @@ public class ConsoleUi {
 
     static Scanner sc = new Scanner(System.in);
 
+    public static String readMenuChoice() {
+        return sc.nextLine().trim();
+    }
+
+    public static void closeScanner() {
+        sc.close();
+    }
+
     public static void printMenuItem() {
         System.out.println("============================");
         System.out.println("Learn Track Managemet System");
@@ -41,7 +49,7 @@ public class ConsoleUi {
         System.out.println("11. Exit");
     }
 
-    public static void studentManagementMenu() {
+    public static void addStudent() {
         System.out.println("============================");
         System.out.println("======Student details=======");
         System.out.println("Student First Name:");
@@ -131,7 +139,7 @@ public class ConsoleUi {
         System.out.println("Course Name: ");
         String courseName = sc.nextLine().trim();
         System.out.println("Course Description: ");
-        String courseDescription = sc.nextLine().trim();
+        String description = sc.nextLine().trim();
         System.out.println("Course Duration in weeks: ");
         int durationInWeeks;
         try {
@@ -144,7 +152,15 @@ public class ConsoleUi {
         }
         System.out.println("Course status: ");
         boolean active = Boolean.parseBoolean(sc.nextLine().trim());
-        Course course = new Course(courseName, courseDescription, durationInWeeks, active);
+        Course course;
+        try {
+            course = new Course(courseName, description, durationInWeeks, active);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Invalid input: " + e.getMessage());
+            System.out.println("Return to previous menu press enter");
+            sc.nextLine();
+            return;
+        }
         Course courseAdded = courseService.addCourse(course);
         System.out.println("Course added successfully: " +courseAdded);
         System.out.println("Return to previous menu press enter");

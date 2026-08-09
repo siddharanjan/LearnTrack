@@ -23,7 +23,7 @@ Enrollment Management
 ## Project Structure
 
 ```
-com.airtribe.learntrack/
+com/airtribe/learntrack/
 ├── Main.java              # starts the program and runs the menu loop
 ├── entity/                # the data classes
 │   ├── Person.java        # base class with firstName, lastName, email
@@ -117,7 +117,7 @@ javac -d out $(find com.airtribe.learntrack -name "*.java")
 ### Run
 
 ```bash
-java -cp out Main
+java -cp out com.airtribe.learntrack.Main
 ```
 
 Type a number and press Enter to pick a menu option. Type `11` to exit.

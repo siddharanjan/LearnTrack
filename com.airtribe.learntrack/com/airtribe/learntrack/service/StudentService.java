@@ -32,7 +32,7 @@ public class StudentService {
     public Student deactivateStudent(int studentId) {
         for (Student student: students) {
             if (studentId == student.getId()) {
-                student.setActive(false);
+                student.deactivate();
                 return student;
             }
         }

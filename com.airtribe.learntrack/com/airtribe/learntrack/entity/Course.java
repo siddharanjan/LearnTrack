@@ -7,10 +7,13 @@ public class Course {
     private int durationInWeeks;
     private boolean active;
 
-    public Course(String courseName, String courseDescription, int durationInWeeks, boolean active) {
+    public Course() {
+    }
+
+    public Course(String courseName, String description, int durationInWeeks, boolean active) {
         this.courseName = courseName;
-        this.description = courseDescription;
-        this.durationInWeeks = durationInWeeks;
+        this.description = description;
+        setDurationInWeeks(durationInWeeks);
         this.active = active;
     }
 
@@ -43,6 +46,9 @@ public class Course {
     }
 
     public void setDurationInWeeks(int durationInWeeks) {
+        if (durationInWeeks <= 0) {
+            throw new IllegalArgumentException("Duration in weeks must be a positive number.");
+        }
         this.durationInWeeks = durationInWeeks;
     }
 
@@ -50,7 +56,15 @@ public class Course {
         return active;
     }
 
-    public void setActive(boolean active) {
+    public void activate() {
+        this.active = true;
+    }
+
+    public void deactivate() {
+        this.active = false;
+    }
+
+    private void setActive(boolean active) {
         this.active = active;
     }
 
