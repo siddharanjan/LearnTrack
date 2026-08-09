@@ -1,47 +1,47 @@
 # LearnTrack
 
-A console-based Student & Course Management System written in Core Java. LearnTrack lets an admin manage students, courses, and enrollments entirely from a menu-driven terminal application, using in-memory collections (no database, no external dependencies).
+LearnTrack is a console based Student and Course Management System built in core Java. An admin can add students, add courses, and enroll students in courses, all from a simple text menu. Everything is stored in memory while the program runs. There is no database.
 
 ## Features
 
-**Student Management**
+Student Management
 - Add a new student
 - View all students
 - Search for a student by ID
 - Deactivate a student
 
-**Course Management**
+Course Management
 - Add a new course
 - View all courses
-- Activate / deactivate a course
+- Activate or deactivate a course
 
-**Enrollment Management**
+Enrollment Management
 - Enroll a student in a course
 - View a student's enrollment
-- Mark an enrollment as completed / cancelled
+- Mark an enrollment as completed or cancelled
 
 ## Project Structure
 
 ```
 com.airtribe.learntrack/
-├── Main.java                  # Application entry point — runs the menu loop
-├── entity/                    # Data classes
-│   ├── Person.java            # Base class: firstName, lastName, email
-│   ├── Student.java           # extends Person — id, batch, active
-│   ├── Trainer.java           # extends Person — id, batch, active
-│   ├── Course.java            # id, courseName, description, durationInWeeks, active
-│   └── Enrollment.java        # id, studentId, courseId, enrollmentDate, status
-├── service/                   # Business logic, one service per entity
+├── Main.java              # starts the program and runs the menu loop
+├── entity/                # the data classes
+│   ├── Person.java        # base class with firstName, lastName, email
+│   ├── Student.java       # extends Person, adds id, batch, active
+│   ├── Trainer.java       # extends Person, adds id, batch, active
+│   ├── Course.java        # id, courseName, description, durationInWeeks, active
+│   └── Enrollment.java    # id, studentId, courseId, enrollmentDate, status
+├── service/                # the logic for each entity
 │   ├── StudentService.java
 │   ├── CourseService.java
 │   └── EnrollmentService.java
 ├── ui/
-│   └── ConsoleUi.java          # Menu rendering + input handling, delegates to services
+│   └── ConsoleUi.java       # shows the menu, reads input, calls the services
 ├── exception/
 │   ├── EntityNotFoundException.java
 │   └── EntityNotActiveException.java
 └── util/
-    └── IdGenerator.java        # Static ID counters for students/courses/enrollments
+    └── IdGenerator.java     # gives out the next id for students, courses, enrollments
 ```
 
 ## Class Diagram
@@ -102,13 +102,13 @@ classDiagram
 
 ## Getting Started
 
-### Prerequisites
+### What you need
 
-- JDK 17 or newer (see [`docs/Setup_Instructions.md`](docs/Setup_Instructions.md) for install steps and version verification).
+JDK 17 or newer. See [`docs/Setup_Instructions.md`](docs/Setup_Instructions.md) for how to check and install it.
 
 ### Compile
 
-From the repository root:
+From the project root, run:
 
 ```bash
 javac -d out $(find com.airtribe.learntrack -name "*.java")
@@ -120,10 +120,10 @@ javac -d out $(find com.airtribe.learntrack -name "*.java")
 java -cp out Main
 ```
 
-You'll be dropped into the main menu — enter a number and press Enter to pick an option, and `11` to exit.
+Type a number and press Enter to pick a menu option. Type `11` to exit.
 
 ## Documentation
 
-- [`docs/Setup_Instructions.md`](docs/Setup_Instructions.md) — JDK version, install steps, "Hello World" sanity check.
-- [`docs/JVM_Basics.md`](docs/JVM_Basics.md) — JDK vs JRE vs JVM, bytecode, "write once, run anywhere."
-- [`docs/Design_Notes.md`](docs/Design_Notes.md) — why `ArrayList` over arrays, where/why static members are used, where inheritance is used, and an honest list of known limitations in the current implementation.
+- [`docs/Setup_Instructions.md`](docs/Setup_Instructions.md) - JDK version, install steps, and a Hello World check.
+- [`docs/JVM_Basics.md`](docs/JVM_Basics.md) - what JDK, JRE, and JVM mean, what bytecode is, and what "write once, run anywhere" means.
+- [`docs/Design_Notes.md`](docs/Design_Notes.md) - why I used ArrayList, where I used static fields and why, and where I used inheritance.

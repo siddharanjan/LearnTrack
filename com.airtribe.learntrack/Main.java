@@ -1,4 +1,3 @@
-import com.airtribe.learntrack.exception.EntityNotFoundException;
 import com.airtribe.learntrack.ui.ConsoleUi;
 
 import java.util.Scanner;
@@ -7,7 +6,7 @@ import java.util.Scanner;
  * Main class for the LearnTrack project. Serves as the application's entry point.
  */
 public class Main {
-    public static void main(String[] args) throws EntityNotFoundException {
+    public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         boolean running = true;
         while (running) {

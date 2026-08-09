@@ -1,39 +1,40 @@
 # Design Notes
 
-## Why `ArrayList` Instead of a Plain Array
+## Why ArrayList Instead of a Plain Array
 
-`StudentService`, `CourseService`, and `EnrollmentService` all store their in-memory data in `ArrayList<Student>`, `ArrayList<Course>`, and `ArrayList<Enrollment>` respectively, instead of `Student[]`, `Course[]`, `Enrollment[]`.
+`StudentService`, `CourseService`, and `EnrollmentService` all store their data in an `ArrayList` (`ArrayList<Student>`, `ArrayList<Course>`, `ArrayList<Enrollment>`) instead of a plain array.
 
-The number of students, courses, and enrollments isn't known up front — students get added one at a time from the console menu for the lifetime of the running program. A plain array has a fixed size chosen at creation time, so supporting an unbounded, growing collection with an array would mean manually tracking a "current count" separately from the array's length, and reallocating a bigger array (and copying every element over) whenever it fills up. `ArrayList` does exactly that internal resizing for us, and additionally gives useful behavior out of the box that this project relies on directly:
+I don't know ahead of time how many students, courses, or enrollments will be added. They get added one at a time while the program is running. A plain array has a fixed size once you create it, so I would have to track the count myself and make a new bigger array every time it fills up. `ArrayList` already does this resizing for me. It also gives me a few things I use directly in this project:
 
-- `add(...)` to append a new entity without any capacity bookkeeping.
-- Iteration via `for (Student s : students)` or an explicit `Iterator` (used in `getStudents()`/`getCourses()` to remove entries while iterating, which a plain array can't safely support without shifting elements manually).
-- `isEmpty()` to detect and message an empty list in the UI (e.g. "No students found").
+- `add(...)` to add a new item without worrying about array size.
+- A normal for-each loop to go through the list.
+- A copy constructor, `new ArrayList<>(students)`, to return a safe copy of the list. `getStudents()` and `getCourses()` return a copy so the caller cannot change the service's real list by mistake.
+- `isEmpty()` to check if the list is empty and show a message like "No students found".
 
-Since none of the services need index-based random access or a fixed-size guarantee, `ArrayList` is the simpler and safer choice here.
+None of the services need to access items by index or need a fixed size, so `ArrayList` is the simpler choice here.
 
-## Where Static Members Are Used, and Why
+## Where I Used Static Members, and Why
 
-`util/IdGenerator` is the one place static state is used deliberately:
+`util/IdGenerator` is the one place I use static state on purpose:
 
 ```java
 public class IdGenerator {
-    public static int studentId = 1;
-    public static int courseId = 1;
-    public static int enrollmentId = 1;
+    private static int studentId = 1;
+    private static int courseId = 1;
+    private static int enrollmentId = 1;
 
     public static int studentIdGenerator() { return studentId++; }
-    ...
+    // ...similarly for courseIdGenerator() and enrollmentIdGenerator()
 }
 ```
 
-IDs need to be unique across the whole application and to keep incrementing regardless of which `Student`/`Course`/`Enrollment` object is being created or which service instance is calling it. A static counter is the natural fit: it's shared state that belongs to the *concept* of "the next student ID," not to any single object. If these counters were instance fields on `StudentService` instead, every new `StudentService` would restart numbering from 1, which isn't what we want.
+Every student, course, and enrollment needs a unique id, and the id has to keep going up no matter which object is being created or which service is calling it. A static counter fits this well, because the "next id" belongs to the whole application, not to one object. If I made these counters normal instance fields on `StudentService`, every new `StudentService` would start counting from 1 again, which is not what I want.
 
-**Known gap:** the counter fields themselves are currently `public static`, which means any code can reach in and do `IdGenerator.studentId = 999` directly, bypassing the generator methods entirely. They should be `private static`, exposing only the `...Generator()` methods — that's the safer version of this same pattern and is called out in the improvement backlog for this project.
+The counter fields are `private static`. Nothing outside this class can change `studentId` directly. The only way to move it forward is by calling `studentIdGenerator()`, which keeps this shared state safe to use everywhere.
 
-## Where Inheritance Is Used, and What It Bought Us
+## Where I Used Inheritance, and What It Gave Me
 
-`Person` is the base class for `Student` and `Trainer`, holding the fields common to any person in the system: `firstName`, `lastName`, `email`.
+`Person` is the base class for `Student` and `Trainer`. It holds the fields that any person in the system has: `firstName`, `lastName`, `email`.
 
 ```java
 public class Student extends Person {
@@ -46,23 +47,14 @@ public class Student extends Person {
         this.batch = batch;
         this.active = active;
     }
-    ...
 }
 ```
 
-Without inheritance, `firstName`/`lastName`/`email` (and their getters) would need to be duplicated in both `Student` and `Trainer`, and any future person-like entity (e.g. an `Admin`) would repeat them again. Pulling the shared identity fields into `Person` means:
+Without inheritance, I would have to repeat `firstName`, `lastName`, `email` (and their getters) in both `Student` and `Trainer`, and again in any future class like `Admin`. Putting these shared fields in `Person` means:
 
-- `Student`'s constructor only has to worry about the fields that make a student a student (`batch`, `active`); the identity fields are handed off to `Person` via `super(...)`.
-- Any behavior added to `Person` later (e.g. full-name formatting) is automatically available to every subtype without copy-pasting it.
+- `Student`'s constructor only has to deal with the fields that make a student a student (`batch`, `active`). The name and email fields are passed up to `Person` with `super(...)`.
+- Anything I add to `Person` later (like a full name method) is available to every class that extends it, without copying code.
 
-**Known gap:** the current hierarchy only reuses fields — it doesn't yet demonstrate polymorphism through an overridden method (e.g. a `getDisplayName()` on `Person` with specialized behavior in `Student`/`Trainer`). `toString()` is overridden on the entities, but that's an `Object` override for debugging output, not the inheritance-driven polymorphism the design is meant to showcase. Also, `Trainer`'s parameterized constructor doesn't currently call `super(...)`, so a `Trainer`'s inherited name/email fields are never actually set — `Student` is the class that correctly demonstrates the pattern.
+`Trainer`'s constructor also calls `super(firstName, lastName, email)`, the same way `Student` does, so its inherited fields are actually set.
 
-## Known Limitations (Honest Self-Assessment)
-
-A few issues were found while reviewing this implementation against the brief, noted here deliberately rather than hidden:
-
-1. **`StudentService.getStudents()` / `CourseService.getCourses()` mutate their backing list.** Both methods use an `Iterator` to strip out inactive entries *and return the same list reference*, which means calling "View All Students" after deactivating someone permanently removes that student from memory — not just from that one view. The brief asks for deactivation to replace deletion ("set `active = false}` instead of deleting"), so this needs to change to a non-destructive filter (e.g. build and return a new filtered list, or add a separate `getActiveStudents()` method) rather than removing from the live list.
-2. **`EnrollmentService.getEnrollment()` / `markEnrollment()` can throw on the first non-matching record** instead of scanning the full list, because the `throw` sits in the `else` branch of the per-element loop rather than after the loop completes with no match found.
-3. **Input parsing isn't wrapped in try/catch** in most of `ConsoleUi` (e.g. `sc.nextInt()`, `Integer.parseInt(...)`, `Enrollment.Status.valueOf(...)`), so non-numeric or invalid input can crash the program with an uncaught exception rather than showing a clean error message.
-
-These are tracked as the next things to fix, in priority order, ahead of any further feature work.
+`Person` has a `getDisplayName()` method that returns the first and last name. `Student` overrides it to also show the batch, and `Trainer` overrides it to add "(Trainer)". This is the polymorphism part of inheritance: if you hold a value as a `Person` but it is really a `Student` or a `Trainer`, calling `getDisplayName()` on it runs the subclass version, not the one in `Person`.

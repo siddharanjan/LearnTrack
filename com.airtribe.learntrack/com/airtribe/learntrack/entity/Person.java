@@ -26,5 +26,8 @@ public class Person {
         return email;
     }
 
+    public String getDisplayName() {
+        return firstName + " " + lastName;
+    }
 }
 

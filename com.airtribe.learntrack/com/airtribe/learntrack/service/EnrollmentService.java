@@ -46,13 +46,11 @@ public class EnrollmentService {
 
     public Enrollment getEnrollment(int studentId) throws EntityNotFoundException {
         for (Enrollment enrollment : enrollments) {
-            if (enrollment != null && enrollment.getStudentId() == studentId) {
+            if (enrollment.getStudentId() == studentId) {
                 return enrollment;
-            } else {
-                throw new EntityNotFoundException("Enrollment not found for the student Id");
             }
         }
-        return null;
+        throw new EntityNotFoundException("Enrollment not found for the student Id");
     }
 
     public Enrollment markEnrollment(int enrollmentId, Enrollment.Status status) throws EntityNotFoundException {
@@ -60,10 +58,8 @@ public class EnrollmentService {
             if (enrollmentId == enrollment.getId()) {
                 enrollment.setStatus(status);
                 return enrollment;
-            } else {
-                throw new EntityNotFoundException("Enrollment not found");
             }
         }
-        return null;
+        throw new EntityNotFoundException("Enrollment not found");
     }
 }

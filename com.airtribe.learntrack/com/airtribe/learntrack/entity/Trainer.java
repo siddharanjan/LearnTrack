@@ -33,9 +33,14 @@ public class Trainer extends Person {
     public Trainer() {
     }
 
-    public Trainer(int id, String batch, boolean active) {
-        this.id = id;
+    public Trainer(String firstName, String lastName, String email, String batch, boolean active) {
+        super(firstName, lastName, email);
         this.batch = batch;
         this.active = active;
+    }
+
+    @Override
+    public String getDisplayName() {
+        return super.getDisplayName() + " (Trainer)";
     }
 }

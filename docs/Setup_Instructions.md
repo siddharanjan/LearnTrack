@@ -2,7 +2,7 @@
 
 ## JDK Version Used
 
-This project was built and tested with:
+I built and ran this project with:
 
 ```
 java version "17.0.4.1" 2022-08-18 LTS
@@ -10,24 +10,24 @@ Java(TM) SE Runtime Environment (build 17.0.4.1+1-LTS-2)
 Java HotSpot(TM) 64-Bit Server VM (build 17.0.4.1+1-LTS-2, mixed mode, sharing)
 ```
 
-Any JDK 17 (or newer) distribution works — this was run with an Oracle/OpenJDK 17 LTS build. The IntelliJ project is also configured for language level `JDK_17` (see `.idea/misc.xml`).
+Any JDK 17 or newer should work. This one is an Oracle/OpenJDK 17 LTS build. The IntelliJ project is also set to language level `JDK_17` (see `.idea/misc.xml`).
 
-To check your own installed version:
+To check your own version, run:
 
 ```bash
 java -version
 javac -version
 ```
 
-## Installing the JDK (if needed)
+## Installing the JDK
 
-1. Download a JDK 17+ build (e.g. from [Adoptium](https://adoptium.net/) or Oracle) for your OS.
-2. Run the installer, or on macOS with Homebrew: `brew install openjdk@17`.
-3. Confirm `java`/`javac` are on your `PATH` by re-running `java -version`.
+1. Download a JDK 17 or newer build (for example from [Adoptium](https://adoptium.net/) or Oracle) for your OS.
+2. Run the installer. On macOS with Homebrew you can also run `brew install openjdk@17`.
+3. Run `java -version` again to check that `java` and `javac` are on your PATH.
 
-## "Hello World" Verification
+## Hello World Check
 
-Before running LearnTrack itself, a minimal sanity check that the JDK is installed and working correctly:
+Before running LearnTrack, here is a small check to make sure Java is installed correctly.
 
 ```java
 public class HelloWorld {
@@ -37,21 +37,21 @@ public class HelloWorld {
 }
 ```
 
-Compiled and run from the terminal:
+Compile and run it from the terminal:
 
 ```bash
 javac HelloWorld.java
 java HelloWorld
 ```
 
-Expected output:
+You should see:
 
 ```
 Hello, World!
 ```
 
-`javac` compiles the `.java` source into a `.class` file containing JVM bytecode, and `java` launches the JVM to execute that bytecode. See [`JVM_Basics.md`](JVM_Basics.md) for what's happening under the hood at each step.
+`javac` turns the `.java` file into a `.class` file with bytecode. `java` then runs that bytecode. See [`JVM_Basics.md`](JVM_Basics.md) for more on this.
 
 ## Running LearnTrack
 
-See the root [`README.md`](../README.md) for the actual project compile/run commands.
+See the `README.md` in the project root for the actual compile and run commands.

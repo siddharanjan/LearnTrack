@@ -24,6 +24,11 @@ public class Student extends Person {
         this.active = active;
     }
 
+    @Override
+    public String getDisplayName() {
+        return super.getDisplayName() + " (Batch: " + batch + ")";
+    }
+
     public int getId() {
         return id;
     }

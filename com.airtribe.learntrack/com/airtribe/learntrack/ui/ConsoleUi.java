@@ -9,6 +9,7 @@ import com.airtribe.learntrack.service.CourseService;
 import com.airtribe.learntrack.service.EnrollmentService;
 import com.airtribe.learntrack.service.StudentService;
 
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -77,8 +78,17 @@ public class ConsoleUi {
     public static void searchStudentById() {
         System.out.println("===========================");
         System.out.println("Enter Student Id:");
-        int studentId = sc.nextInt();
-        sc.nextLine();
+        int studentId;
+        try {
+            studentId = sc.nextInt();
+            sc.nextLine();
+        } catch (InputMismatchException e) {
+            sc.nextLine();
+            System.out.println("Invalid input: Student Id must be a number.");
+            System.out.println("Return to previous menu press enter");
+            sc.nextLine();
+            return;
+        }
         Student student = studentService.getStudentById(studentId);
         if (student == null) {
             System.out.println("No students found");
@@ -94,8 +104,17 @@ public class ConsoleUi {
     public static void deactivateStudent() {
         System.out.println("===========================");
         System.out.println("Enter Student Id:");
-        int studentId = sc.nextInt();
-        sc.nextLine();
+        int studentId;
+        try {
+            studentId = sc.nextInt();
+            sc.nextLine();
+        } catch (InputMismatchException e) {
+            sc.nextLine();
+            System.out.println("Invalid input: Student Id must be a number.");
+            System.out.println("Return to previous menu press enter");
+            sc.nextLine();
+            return;
+        }
         Student student = studentService.deactivateStudent(studentId);
         if (student == null) {
             System.out.println("No students found");
@@ -114,7 +133,15 @@ public class ConsoleUi {
         System.out.println("Course Description: ");
         String courseDescription = sc.nextLine().trim();
         System.out.println("Course Duration in weeks: ");
-        int durationInWeeks = Integer.parseInt(sc.nextLine().trim());
+        int durationInWeeks;
+        try {
+            durationInWeeks = Integer.parseInt(sc.nextLine().trim());
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input: Duration in weeks must be a number.");
+            System.out.println("Return to previous menu press enter");
+            sc.nextLine();
+            return;
+        }
         System.out.println("Course status: ");
         boolean active = Boolean.parseBoolean(sc.nextLine().trim());
         Course course = new Course(courseName, courseDescription, durationInWeeks, active);
@@ -154,8 +181,17 @@ public class ConsoleUi {
 
     private static void activateCourse() {
         System.out.println("Please enter course Id:");
-        int courseIdActivation = sc.nextInt();
-        sc.nextLine();
+        int courseIdActivation;
+        try {
+            courseIdActivation = sc.nextInt();
+            sc.nextLine();
+        } catch (InputMismatchException e) {
+            sc.nextLine();
+            System.out.println("Invalid input: Course Id must be a number.");
+            System.out.println("Return to previous menu press enter");
+            sc.nextLine();
+            return;
+        }
         Course courseActivation =  courseService.courseActivation(courseIdActivation);
         if (courseActivation == null) {
             System.out.println("No course found");
@@ -168,9 +204,17 @@ public class ConsoleUi {
 
     private static void deactivateCourse() {
         System.out.println("Please enter course Id:");
-        int courseIdDeActivation = sc.nextInt();
-        sc.nextLine();
-        System.out.println("Please enter course Id:");
+        int courseIdDeActivation;
+        try {
+            courseIdDeActivation = sc.nextInt();
+            sc.nextLine();
+        } catch (InputMismatchException e) {
+            sc.nextLine();
+            System.out.println("Invalid input: Course Id must be a number.");
+            System.out.println("Return to previous menu press enter");
+            sc.nextLine();
+            return;
+        }
         Course courseActivation =  courseService.courseDeActivation(courseIdDeActivation);
         if (courseActivation == null) {
             System.out.println("No course found");
@@ -181,14 +225,24 @@ public class ConsoleUi {
         sc.nextLine();
     }
 
-    public static void enrollAStudent() throws EntityNotFoundException {
+    public static void enrollAStudent() {
         System.out.println("============================");
         System.out.println("=======Enrollment=======");
         System.out.println("Enter student Id: ");
-        int studentId = sc.nextInt();
-        System.out.println("Enter Course Id: ");
-        int courseId = sc.nextInt();
-        sc.nextLine();
+        int studentId;
+        int courseId;
+        try {
+            studentId = sc.nextInt();
+            System.out.println("Enter Course Id: ");
+            courseId = sc.nextInt();
+            sc.nextLine();
+        } catch (InputMismatchException e) {
+            sc.nextLine();
+            System.out.println("Invalid input: Student Id and Course Id must be numbers.");
+            System.out.println("Return to previous menu press enter");
+            sc.nextLine();
+            return;
+        }
         System.out.println("Enter Enrollment Date: ");
         String enrollmentDate = sc.nextLine().trim();
         try {
@@ -204,32 +258,58 @@ public class ConsoleUi {
         sc.nextLine();
     }
 
-    public static void viewEnrollmentForStudent() throws EntityNotFoundException {
+    public static void viewEnrollmentForStudent() {
         System.out.println("============================");
         System.out.println("=======Enrollment Details=======");
         System.out.println("Student Id: ");
-        int studentId = sc.nextInt();
-        sc.nextLine();
-        Enrollment enrollment = enrollmentService.getEnrollment(studentId);
-        System.out.println(enrollment);
-        Student student = studentService.getStudentById(studentId);
-        System.out.println(student);
-        Course course = courseService.getCourseById(enrollment.getCourseId());
-        System.out.println(course);
+        int studentId;
+        try {
+            studentId = sc.nextInt();
+            sc.nextLine();
+        } catch (InputMismatchException e) {
+            sc.nextLine();
+            System.out.println("Invalid input: Student Id must be a number.");
+            System.out.println("Return to previous menu press enter");
+            sc.nextLine();
+            return;
+        }
+        try {
+            Enrollment enrollment = enrollmentService.getEnrollment(studentId);
+            System.out.println(enrollment);
+            Student student = studentService.getStudentById(studentId);
+            System.out.println(student);
+            Course course = courseService.getCourseById(enrollment.getCourseId());
+            System.out.println(course);
+        } catch (EntityNotFoundException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
         System.out.println("Return to previous menu press enter");
         sc.nextLine();
     }
 
-    public static void markEnrollment() throws EntityNotFoundException {
+    public static void markEnrollment() {
         System.out.println("============================");
         System.out.println("=======Enrollment Status change=======");
         System.out.println("Enter Enrollment Id: ");
-        int enrollmentId = Integer.parseInt(sc.nextLine().trim());
-        System.out.println("Enter status (COMPLETED, CANCELLED):");
-        String statusInput = sc.nextLine().trim().toUpperCase();
-        Enrollment.Status status = Enrollment.Status.valueOf(statusInput);
-        Enrollment enrollment = enrollmentService.markEnrollment(enrollmentId, status);
-        System.out.println("Enrollment Updated successfully: " + enrollment);
+        int enrollmentId;
+        Enrollment.Status status;
+        try {
+            enrollmentId = Integer.parseInt(sc.nextLine().trim());
+            System.out.println("Enter status (COMPLETED, CANCELLED):");
+            String statusInput = sc.nextLine().trim().toUpperCase();
+            status = Enrollment.Status.valueOf(statusInput);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Invalid input: Enrollment Id must be a number and status must be COMPLETED or CANCELLED.");
+            System.out.println("Return to previous menu press enter");
+            sc.nextLine();
+            return;
+        }
+        try {
+            Enrollment enrollment = enrollmentService.markEnrollment(enrollmentId, status);
+            System.out.println("Enrollment Updated successfully: " + enrollment);
+        } catch (EntityNotFoundException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
         System.out.println("Return to previous menu press enter");
         sc.nextLine();
     }
