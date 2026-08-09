@@ -10,6 +10,9 @@ public class Trainer extends Person {
     }
 
     public void setId(int id) {
+        if (this.id != 0) {
+            throw new IllegalStateException("ID is already set and cannot be changed.");
+        }
         this.id = id;
     }
 
@@ -50,5 +53,17 @@ public class Trainer extends Person {
     @Override
     public String getDisplayName() {
         return super.getDisplayName() + " (Trainer)";
+    }
+
+    @Override
+    public String toString() {
+        return "Trainer{" +
+                "Trainer Id: " + id +
+                ", First Name: " + getFirstName() +
+                ", Last Name: " + getLastName() +
+                ", Email: " + getEmail() +
+                ", Batch: " + batch +
+                ", Active: " + (active ? "ACTIVE" : "INACTIVE") +
+                '}';
     }
 }

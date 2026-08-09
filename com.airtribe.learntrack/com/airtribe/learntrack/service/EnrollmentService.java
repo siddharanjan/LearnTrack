@@ -38,8 +38,8 @@ public class EnrollmentService {
         if (!course.isActive()) {
             throw new EntityNotActiveException("Course not active");
         }
-        enrollment = new Enrollment(
-                IdGenerator.enrollmentIdGenerator(), studentId, courseId, enrollmentDate, Enrollment.Status.ACTIVE);
+        enrollment = new Enrollment(studentId, courseId, enrollmentDate, Enrollment.Status.ACTIVE);
+        enrollment.setId(IdGenerator.enrollmentIdGenerator());
         enrollments.add(enrollment);
         return enrollment;
     }

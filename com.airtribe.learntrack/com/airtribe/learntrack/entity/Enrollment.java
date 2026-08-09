@@ -18,8 +18,7 @@ public class Enrollment {
                 '}';
     }
 
-    public Enrollment(int id, int studentId, int courseId, String enrollmentDate, Status status) {
-        this.id = id;
+    public Enrollment(int studentId, int courseId, String enrollmentDate, Status status) {
         this.studentId = studentId;
         this.courseId = courseId;
         this.enrollmentDate = enrollmentDate;
@@ -33,12 +32,17 @@ public class Enrollment {
         CANCELLED
     }
 
+    public Enrollment() {
+    }
 
     public int getId() {
         return id;
     }
 
     public void setId(int id) {
+        if (this.id != 0) {
+            throw new IllegalStateException("ID is already set and cannot be changed.");
+        }
         this.id = id;
     }
 

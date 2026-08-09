@@ -22,6 +22,9 @@ public class Course {
     }
 
     public void setId(int id) {
+        if (this.id != 0) {
+            throw new IllegalStateException("ID is already set and cannot be changed.");
+        }
         this.id = id;
     }
 
@@ -75,7 +78,7 @@ public class Course {
                 ", Course Name ='" + courseName + '\'' +
                 ", Course Description='" + description + '\'' +
                 ", Course Duration in weeks =" + durationInWeeks +
-                ", Course Status =" + active +
+                ", Course Status =" + (active ? "ACTIVE" : "INACTIVE") +
                 '}';
     }
 }

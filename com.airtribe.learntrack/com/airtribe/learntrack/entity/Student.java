@@ -14,7 +14,7 @@ public class Student extends Person {
                 ", Last Name: "+ getLastName() +
                 ", Email: "+ getEmail() +
                 ", Batch: " + batch  +
-                ", Active: " + active +
+                ", Active: " + (active ? "ACTIVE" : "INACTIVE") +
                 '}';
     }
 
@@ -34,6 +34,9 @@ public class Student extends Person {
     }
 
     public void setId(int id) {
+        if (this.id != 0) {
+            throw new IllegalStateException("ID is already set and cannot be changed.");
+        }
         this.id = id;
     }
 
