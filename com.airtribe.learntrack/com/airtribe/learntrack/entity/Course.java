@@ -1,0 +1,84 @@
+package com.airtribe.learntrack.entity;
+
+public class Course {
+    private int id;
+    private String courseName;
+    private String description;
+    private int durationInWeeks;
+    private boolean active;
+
+    public Course() {
+    }
+
+    public Course(String courseName, String description, int durationInWeeks, boolean active) {
+        this.courseName = courseName;
+        this.description = description;
+        setDurationInWeeks(durationInWeeks);
+        this.active = active;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        if (this.id != 0) {
+            throw new IllegalStateException("ID is already set and cannot be changed.");
+        }
+        this.id = id;
+    }
+
+    public String getCourseName() {
+        return courseName;
+    }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getDurationInWeeks() {
+        return durationInWeeks;
+    }
+
+    public void setDurationInWeeks(int durationInWeeks) {
+        if (durationInWeeks <= 0) {
+            throw new IllegalArgumentException("Duration in weeks must be a positive number.");
+        }
+        this.durationInWeeks = durationInWeeks;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void activate() {
+        this.active = true;
+    }
+
+    public void deactivate() {
+        this.active = false;
+    }
+
+    private void setActive(boolean active) {
+        this.active = active;
+    }
+
+    @Override
+    public String toString() {
+        return "Course{" +
+                "Course Id =" + id +
+                ", Course Name ='" + courseName + '\'' +
+                ", Course Description='" + description + '\'' +
+                ", Course Duration in weeks =" + durationInWeeks +
+                ", Course Status =" + (active ? "ACTIVE" : "INACTIVE") +
+                '}';
+    }
+}
